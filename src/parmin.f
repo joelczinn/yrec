@@ -892,8 +892,7 @@ C G Somers 11/14 write the new header for the .store file, if LSTORE = TRUE.
       IF(LSTORE)THEN
 C JvS 08/25 Added stitched interior and envelope option      
          IF(LSTCH)THEN
-            !WRITE(ISTOR,1013)
-            !WRITE(ISTOR,1014)
+            LPHHD = .TRUE.
          ELSE
             WRITE(ISTOR,1012)
          ENDIF   
