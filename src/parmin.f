@@ -892,8 +892,7 @@ C G Somers 11/14 write the new header for the .store file, if LSTORE = TRUE.
       IF(LSTORE)THEN
 C JvS 08/25 Added stitched interior and envelope option      
          IF(LSTCH)THEN
-            !WRITE(ISTOR,1013)
-            !WRITE(ISTOR,1014)
+            LPHHD = .TRUE.
          ELSE
             WRITE(ISTOR,1012)
          ENDIF   
@@ -1067,7 +1066,8 @@ C G Somers 8/17 ZERO'D OUT EXTAU. TAUCZ TERM NOW COMPUTED IN
 C MWIND/MCOWIND, NOT IN AMCALC.
 C            EXTAU = 4.0D0*PMMM
             EXTAU = 0.0
-            EXR   = 2.0D0+5.0D0*PMMM-4.0D0*PMMM*PMMB*PMMC
+C JvS 09/25 REMOVED TYPO IN EXR = 2.0D0+5.0D0*PMMM-4.0D0*PMMM*PMMB*PMMC
+            EXR   = 2.0D0+5.0D0*PMMM-4.0D0*PMMM*PMMC
             EXM   = -PMMM
             EXL   = 1.0D0 - 2.0D0*PMMM
 C G Somers 11/17, ADDED PMMD TO SWTICH OFF IN K97 FORM.
