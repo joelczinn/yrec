@@ -1,6 +1,8 @@
 Test Suite Use
 ==============
 
+While YREC is a pure Fortran application, pytest was chosen to be the test execution framework due to its feature set and ease of installation and use. A standardized set of test cases is provided in this directory. Instructions for how to run all or a subset of the available preselected test cases may be found in this readme.
+
 ## Environment
 
 The test suite is implemented using pytest, which in turn requires python. A python virtualenv may be useful.
