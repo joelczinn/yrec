@@ -2,7 +2,7 @@
 *  This subroutine interpolates the electron thermal conductivity       *
 *               from the data file "condall.d"                          *
 *  ---------------------------------------------------  Version 23.05.99
-      recursive subroutine CondOpacP(Zion,TLG,RLG,CK,DRK,DTK)
+      subroutine CondOpacP(Zion,TLG,RLG,CK,DRK,DTK)
 * Input: Zion - ion charge, TLG - lg(T[K]), RLG - lg(rho[g/cc])
 * Output: CK - Log_{10} thermal conductivity (kappa) [CGS units]
 *         DRK - d log kappa / d log rho
@@ -29,19 +29,21 @@ C     e-mail: palex@astro.ioffe.rssi.ru
       parameter (MAXT=19,MAXR=64,MAXZ=15)
 !!! NB: These parameters must be consistent with the table "condall.d"!!!
       dimension AT(MAXT),AR(MAXR),AZ(MAXZ),AKAP(MAXT,MAXR,MAXZ)
-      data KRUN/-1/
 
 C The following three lines provide and interface to PARMIN in order to
 C locate the Potekhin files.
 C MHP 8/25 Removed character file names from common block
       COMMON /MISCOPAC/IKUR2,IcondOpacP,LcondOpacP
       LOGICAL*4 LcondOpacP
+
 C removed unused variables
 C     CHARACTER*256 FKUR2,FcondOpacP
-C 
+
+      data KRUN/-1/
+
       if (KRUN.ne.12345) then   ! Reading
          IP = IcondOpacP
-C MHP 8/25 file opening moved to parmin 
+C MHP 8/25 file opening moved to parmin
 C         open(IP,file=FcondOpacP,status='OLD')
 c         print*,'Reading thermal conductivity data...'
          read(IP,'(A)') ! skip the first line
@@ -186,7 +188,7 @@ C      if (IT.eq.0.or.IT.eq.MAXT) stop'CONINTER: T out of range'
    10 return
       end
 
-      recursive subroutine HUNT(XX,N,X,JLO)
+      subroutine HUNT(XX,N,X,JLO)
 *   W.H.Press, B.P.Flannery, S.A.Teukolsky, W.T.Vetterling
 *   Numerical Receipes(Cambridge Univ., 1986)
 *     Given an array XX of length N, and given a value X,
