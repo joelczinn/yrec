@@ -126,14 +126,14 @@
  LPULSE = .FALSE. ! If T, generate pulsation output. LSTATM AND LSTENV are needed to get data for those regions (highly recommended if LPULSE is T)  
   
  LALEX06 = .TRUE. ! If T, use Ferguson+2005 molecular opacities (recommended)
- FALEX06 = "../../input/opacity/alex06/alexmol06gs98.tab" ! Molecular opacity table path  
+ FALEX06 = "../../input/opacity/molecular/alex06/alexmol06gs98.tab" ! Molecular opacity table path  
    
  LOPAL95 = .TRUE. ! If T, use atomic opacities in the OP/OPAL format (recommended).
  ZOPAL951 = 0.018777 ! Generate a surface mixture table with this Z. Speeds up models without diffusion.
- FLIV95 = "../../input/opacity/opal95/GS98.OP17" ! Atomic opacity table path
+ FLIV95 = "../../input/opacity/atomic/legacy/opal95/GS98.OP17" ! Atomic opacity table path
   
  LPUREZ = .TRUE. 
- FPUREZ = "../../input/opacity/lanl/PURECO.DBGLAOL" ! Pure Y/Z  opacity table path
+ FPUREZ = "../../input/opacity/atomic/lanl/PURECO.DBGLAOL" ! Pure Y/Z  opacity table path
   
 ! FFIRST = "../../input/models/seed/p900gs98z0188.nmo" ! Starting model path.
  FFIRST = "../../input/models/start/m16000gs98z018804_prems.first" ! The last converged model is stored here.
@@ -149,7 +149,7 @@
  FSCOMP = "output/m25000gs98z018804_prems.excomp" ! No longer used (light elements vs. time, now included in track file)
   
  FOPALE06 = "../../input/eos/opal2006/EOSOPAL06Z0.018776" ! OPAL 2006 EoS table path.
- FcondOpacP = "../../input/opacity/potekhin/condall06.d" ! Conductive opacity table path.
+ FcondOpacP = "../../input/opacity/conductive/potekhin/condall06.d" ! Conductive opacity table path.
  FATM = "../../input/atmos/kurucz/atmk1990p00.tab" ! Model atmosphere look-up table for Kurucz and Kurucz/Castelli.
  FALLARD = "../../input/atmos/allard/Nextgen2.all" ! Allard model atmosphere look-up table (solar Z only).
  FSCVH = "../../input/eos/scv/h_tab_i.dat" ! SCZ EoS table for X

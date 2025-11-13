@@ -1,9 +1,29 @@
 Quick Start
 ===========
 
+Why the *Yale Rotating Evolution Code*? YREC is an efficient, high-performance stellar evolution code designed for precise modeling of stars ranging in mass from the brown dwarf limit to high-mass stars. Its modern treatment of microphysics, magnetic and rotational phenomena, internal composition, and transport processes give it flexibility in handling a wide range of astrophysically relevant phenomena.
+
 To run YREC you need to first build it, link it with the appropriate input physics tables, and provide a starting model. It is important to note that you must choose a starting model from the library of solutions, as YREC is a relaxation code. Changes to starting models are processed with a “rescaling” option.
 
 ## Installation
+
+To begin with the installation process, you need to obtain a copy of the source files. The easiest way is to clone the repository:
+
+```
+git clone https://github.com/yreclab/yrec.git
+```
+
+However, the repository can also be downloaded by clicking on the `Code` button on the Github page: [https://github.com/yreclab/yrec](https://github.com/yreclab/yrec).
+
+```{admonition} Downloading a stable release
+:class: note
+:name: downloading-stable
+Downloading the most recent version of YREC to start out with may not always be the best idea. Although YREC developers do try to keep the repository running smoothly, breaking changes may occur to the main repository at times; changes may also occur to the code to make the documentation obsolete. In order to prevent this, consider downloading a stable release of YREC from the following url: [https://github.com/yreclab/yrec/releases](https://github.com/yreclab/yrec/releases).
+```
+
+Once you have obtained a copy of the source files, enter the directory by doing `cd yrec`.
+
+### Compilation
 
 ```{admonition} Code Location
 :class: seealso
@@ -11,9 +31,13 @@ To run YREC you need to first build it, link it with the appropriate input physi
 The code can be found in `src/` (all files ending in `.f`, e.g. `*.f`.) They are assembled into an executable using the script `Makefile`. This will require a Fortran compiler on your machine. The name of the executable can be adjusted, or the location of it moved to your working directory.
 ```
 
-To begin with the installation process, you will need the GNU Fortran (`gfortran`) or Intel Fortran (`ifort`) compiler, which you can install using your package manager.
+To proceed with compilation, you will need the GNU Fortran (`gfortran`) or Intel Fortran (`ifort`) compiler, which you can install using your package manager. For instance, with a Debian-based operating system, try
 
-In the `yrec/src` directory, run the `make` command. It will create a `yrec` binary in the current directory.
+```
+sudo apt-get install gfortran
+```
+
+Enter the `yrec/src` directory by doing `cd src`, then run the `make` command. It will create a `yrec` binary in the current directory.
 
 This binary can then be moved to another directory, renamed, and then called using `./yrec file.nml1 file.nml2`.
 
@@ -23,13 +47,72 @@ To install yrec to ~/bin, run the following command:
 make && make install PREFIX=~/bin
 ```
 
-This will then allow you to call yrec from a directory that has been added to your $PATH.
+If `~/bin` has been added to your $PATH, you should now be able to call yrec by typing in `yrec`.
 
-You can also run it without a PREFIX specified, using `make; sudo make install`; doing so will install to `/usr/local/bin/yrec`, so you can call `yrec` from any directory.
+You can also run it without a PREFIX specified, using:
 
-## Running the examples
+```
+make; sudo make install
+```
 
-There are existing runs packaged with YREC in the `examples/` directory. These include a variety of different test cases which span a wide range in mass and age. To run, simply open a terminal at the folder and follow the instructions in the README to feed in the appropriate `nml1` and `nml2` files.
+Doing this will install to `/usr/local/bin/yrec`, so you can call `yrec` from any directory without modifying your $PATH.
+
+## Setting up a run
+
+Each YREC run requires two namelists to be defined: the control namelist (`.nml1`), and the physics namelist (`.nml2`). The control namelist includes input/output data and global run information. The physics namelist includes microphysics and numerical parameters. To perform a run with `filename_A.nml1` and `filename_B.nml2`, simply run:
+
+```
+yrec filename_A.nml1 filename_B.nml2
+```
+
+This is assuming that `yrec` is on your $PATH. If it is instead in your current directory, try:
+
+```
+./yrec filename_A.nml1 filename_B.nml2
+```
+
+Replace `./yrec` with the relative or absolute directory of the YREC executable that you compiled in the prior step.
+
+### Paths for input and output
+
+In order to read in the relevant microphysics tables, YREC needs to know where the tables are stored.
+
+Currently, the paths defined in the control namelist (`.nml1`) are hardcoded as relative paths. This assumes a directory filestructure and a location for the `input/` folder and the location of where the output files are to go (usually in `output/`).
+
+When namelist files are arbitrarily moved, often the input folder will no longer be present at the location that the namelist expects, and it will error as such:
+
+```
+Fortran runtime error: Cannot open file '../../input/eos/opal2006/EOSOPAL06Z0.016492': No such file or directory
+```
+
+An easy fix to this solution is to place the `input/` folder at a known location on your computer, then replace the relative paths to the input folder with absolute paths, for instance `/home/user/yrec/input/`.
+
+If you get an error like this:
+```
+Fortran runtime error: Cannot open file 'output/Test_*.store': No such file or directory
+```
+
+Then please check and make sure the path exists. If the folder `output` does not exist, the file will not run, so `mkdir output` in this case.
+
+Before starting a run, please make sure your namelists point to the correct input and output directories that you expect!
+
+### Starting model
+
+The other prerequisite for starting a YREC run is to define the starting model, which is pointed to by the `FFIRST` variable in the control namelist (`.nml1`). Suitable models can be found in the `yrec/input/models` directory, under subfolders. `seed` models are original legacy models. `start` models are initialized high up on the Hayashi track, making them a useful starting point for large changes in mass or composition. `dbl` models are models where p+d fusion has started on the Deuterium burning birthline. This is the recommended starting point for most calculations. Scripts for generating these models are found in the `yrec/examples` folders.
+
+Some runs (particularly up the giant branch) may also benefit from starting on the terminal age main sequence as well. Some selected models for the test suites have been saved in the `tams` folder as well.
+
+
+
+```{admonition} Rescaling models
+:class: seealso
+:name: rescaling
+Changes to starting models are processed with a "rescaling" option in the control namelist, `KINDRN(i) = 3`. For more details see the [control namelist](namelist_control.md).
+```
+
+## Running the test suite
+
+There are existing runs packaged with YREC in the `testsuite/` and `examples/` directories. These include a variety of different test cases which span a wide range in mass and age. To run, simply open a terminal at the folder and follow the instructions in the README to feed in the appropriate `nml1` and `nml2` files. These files are also documented in the [test suite](testsuite.md) part of the documentation.
 
 ```{admonition} Namelist file locations
 :class: caution
@@ -53,4 +136,9 @@ YREC produces multiple output files, which can be parsed and plotted. The nature
 | `.full`      | Deprecated detailed model structure output, formatted. |
 | `.excomp`      | Deprecated composition output over time, moved to .track. |
 
-### Batch scripting and templating
+### Scripting
+
+While the YREC repository itself doesn't have an "official" set of scripts, many scripts and analysis notebooks have been contributed by the community. Some examples include:
+
+- [YREC User Tools](https://github.com/sbyrom2/yrec_user_tools): Functions and guidelines for using the Yale Rotating Evolution Code 
+- [YREC-Wrappers](https://github.com/yreclab/YREC-Wrappers): Wrappers, helpful codes, and additional machinery to interface with YREC with languages such as Python

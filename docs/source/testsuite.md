@@ -1,54 +1,84 @@
 Test Suite
 ==========
 
+YREC includes an explicit set of namelists which cover behaviors known to work in the code. They act as example namelists for how to work with the code, and log specific configurations where the code will produce an expected result. As a result, they are also used to test backwards compatibility of the code between versions.
+
+The test suite is currently divided into two categories: one is the **published test suite**, which represents a stable set of models published with one or more YREC instrument papers. The second is a set of contributed **test suite extras**, which demonstrate relevant code functionality and may be independently documented or published.
+
+## Published Test Suite (`testsuite/`)
+
+The stable, published, version of the test suite is located in the `testsuite/` directory, corresponding to the suite described in Pinsonneault et al. (*in prep*). This test suite covers a wide range in mass, evolutionary state, and input physics.
+
 ```{admonition} Defaults
 :class: important
 All tracks are solar metallicity unless otherwise noted. Standard suite includes the GS98 mixture and OP opacities, OPAL06 + SCV EoS, gray atmosphere, 0.2 Hp core overshoot w/0.15 beta above 1 Msun, SFII rates, no diffusion or rotation.  
 ```
 
-## Solar models
+### [Solar models](testsuite/solar.md)
 
-- Solar auto-calibration run: standard model, includes Z/X calibration: `Testsolarcalibration`. Note: sta 
 
-- Standard solar model – `Test_solar_noGS_norot_gray_OPALSCV_SF2_GS98_OP_CF10`. Note: CF10= moved core fitting point in by 10x to 1e-4 (recommended for solar models.) 
+| Model Name     | Description    |
+| ------------ | -------------- |
+| `Test_solar_base`      | A solar model taken to be the "base case". No diffusion, no rotation, and with a gray atmosphere. |
+| `Test_solar_dif`      | The base case, with diffusion turned on: `LDIFY`, `LDIFZ`, and `LDIFLI` set to `.TRUE.`. |
+| `Test_solar_dif_rot`      | The base case, with diffusion turned on, and rotation turned on: `LROT`, `LNEW0`, `LWNEW`, `LDISK` set to `.TRUE.`. |
+| `Test_solar_dif_rot_fast`      | The base case, with diffusion turned on, and rotation turned on. `TDISK` and `FC` reduced relative to the `_rot` case. |
+| `Test_solar_dif_rot_solid`      | The base case, with diffusion turned on, and rotation turned on. Solid body rotation `LSOLID` enforced, and `FC` increased relative to `_rot`. |
+| `Test_solar_allard`      | The base case, but with an Allard model atmosphere (`KTTAU = 4`). |
+| `Test_solar_kurucz`      | The base case, but with a Kurucz model atmosphere (`KTTAU = 3`). |
+| `Test_solar_SF3`      | The base case, but with custom cross sections from Solar Fusion III set (`S0_*`). |
+| `Test_solar_yaleeos`      | The base case, but with the Yale EOS, `LOPALE06 = .FALSE.` and `LSCV = .FALSE.`. |
 
-- Solar model, settling, no rotation – small core and envelope fitting. `Test_solar_GS_norot_gray_OPALSCV_SF2_GS98_OP_CF10`. Note: CF10= moved core fitting point in by 10x to 1e-4 (recommended for solar models.) 
+### [Brown dwarf models](testsuite/brown_dwarf.md)
 
-- Solar model, settling and rotation – small core and envelope fitting. `Test_solar_GS_rot_gray_OPALSCV_SF2_GS98_OP_CF10`. Note: CF10= moved core fitting point in by 10x to 1e-4 (recommended for solar models.)
 
-## Evolution to core He ignition
+| Model Name     | Description    |
+| ------------ | -------------- |
+| `Test_m0030_feh0_allard_15Gyr`      | A 0.03$M_\odot$ model with the Allard model atmosphere (`KTTAU = 4`), run to 15 Gyr. |
+| `Test_m0050_feh0_allard_15Gyr`      | A 0.05$M_\odot$ model with the Allard model atmosphere (`KTTAU = 4`), run to 15 Gyr. |
+| `Test_m0080_feh0_allard_15Gyr`      | A 0.08$M_\odot$ model with the Allard model atmosphere (`KTTAU = 4`), run to 15 Gyr. |
 
-- 1 solar mass pre-MS to core He ignition, no settling or rotation, legacy neutrino cooling, standard core and envelope fitting: `Test_preMStoHeflash_gray_OPALSCV_SF2_GS98_OP`
+### [Zero age main sequence (ZAMS) models](testsuite/evolve_to_zams.md)
 
-- 1 solar mass pre -MS to core He ignition, no settling or rotation, Itoh neutrino cooling,1 solar mass standard core and envelope fitting: `Test_1M_preMStoHeflash_std_Itoh_gray_OPALSCV_SF2_GS98_OP`
 
-- 3 solar mass pre -MS to core He ignition, no settling or rotation, Itoh neutrino cooling, 3 solar mass standard core and envelope fitting: `Test_3M_preMStoHeflash_std_Itoh_gray_OPALSCV_SF2_GS98_OP`
+| Model Name     | Description    |
+| ------------ | -------------- |
+| `Test_m0100_feh0_base_ZAMS`      | A 0.1$M_\odot$ model taken to be the "base case". No diffusion, no rotation, and with a gray atmosphere, run to the ZAMS. |
+| `Test_m0100_feh0_allard_ZAMS`      | A 0.1$M_\odot$ base model with the Allard model atmosphere (`KTTAU = 4`) instead, run to the ZAMS. |
+| `Test_m0100_feh0_spot25_ZAMS`      | A 0.1$M_\odot$ base model with the starspot filling fraction set to 0.25, run to the ZAMS; `LSDEPTH = .TRUE.`, `SPOTF = 0.25`, and `SPOTX = 0.85`. |
+| `Test_m0300_feh0_allard_ZAMS`      | A 0.3$M_\odot$ base model with the Allard model atmosphere (`KTTAU = 4`) instead, run to the ZAMS. Note: the `Test_m0300_feh0_base_ZAMS` model exists, but is classified under `Evolution`. |
+| `Test_m0300_feh0_spot25_ZAMS`      | A 0.3$M_\odot$ base model with the starspot filling fraction set to 0.25, run to the ZAMS; `LSDEPTH = .TRUE.`, `SPOTF = 0.25`, and `SPOTX = 0.85`. |
+| `Test_m0300_feh0_scveos_ZAMS`      | A 0.3$M_\odot$ base model, but with the SCV EOS, `LOPALE06 = .FALSE.`. |
+| `Test_m0300_feh0_yaleeos_ZAMS`      | A 0.3$M_\odot$ base model, but with the Yale EOS, `LOPALE06 = .FALSE.` and `LSCV = .FALSE.`. |
+| `Test_m1000_feh0_spot25_ZAMS`      | A 1.0$M_\odot$ base model with the starspot filling fraction set to 0.25, run to the ZAMS; `LSDEPTH = .TRUE.`, `SPOTF = 0.25`, and `SPOTX = 0.85`. |
 
-- 8 solar mass pre -MS to core He ignition, no settling or rotation, Itoh neutrino cooling, 8 solar mass standard core and envelope fitting: `Test_8M_preMStoHeflash_std_Itoh_gray_OPALSCV_SF2_GS98_OP` 
+### [Terminal age main sequence (TAMS) models](testsuite/evolve_to_tams.md)
 
-- A ZAHB run for 1 Msun. 
 
-- 0.3 solar masses, Pre-MS to WD cooling, no settling or rotation, standard core and envelope fitting: `Test_0p3M_preMStoWD_std_gray_OPALSCV_SF2_GS98_OP` 
+| Model Name     | Description    |
+| ------------ | -------------- |
+| `Test_m1000_feh0_dif_ZAMS`      | A 1.0$M_\odot$ base case, with diffusion turned on: `LDIFY`, `LDIFZ`, and `LDIFLI` set to `.TRUE.`, run to the TAMS. |
+| `Test_m1400_feh0_dif_ZAMS`      | A 1.4$M_\odot$ base case, with diffusion turned on: `LDIFY`, `LDIFZ`, and `LDIFLI` set to `.TRUE.`, run to the TAMS. |
 
-- 0.1 solar masses, Pre-MS to WD cooling, no settling or rotation, standard core and envelope fitting: `Test_0p1M_preMStoWD_std_gray_OPALSCV_SF2_GS98_OP` 
+### [Evolution models](testsuite/evolution.md)
 
-- [**Pre-MS to core He ignition**]()\
-Pre-MS to core He ignition, settling, no rotation 1.2, 1.4, 1.6 -standard core and envelope fitting; test GS for thin envelopes. May need outer fitting point at 1e-3. 
 
-## Rotational models
+| Model Name     | Description    |
+| ------------ | -------------- |
+| `Test_m0300_feh0_base_ZAMS`      | A 0.3$M_\odot$ base case. No diffusion, no rotation, and with a gray atmosphere. Run to the ZAMS. |
+| `Test_m0300_feh0_base_TAMS`      | A 0.3$M_\odot$ base case. No diffusion, no rotation, and with a gray atmosphere. Run to the TAMS. |
+| `Test_m1000_feh0_base_TAMS`      | A 1.0$M_\odot$ base case. No diffusion, no rotation, and with a gray atmosphere. Run to the TAMS. |
+| `Test_m1000_feh0_base_HeIgnite`      | A 1.0$M_\odot$ base case. No diffusion, no rotation, and with a gray atmosphere. Run to He ignition. |
+| `Test_m3000_feh0_base_TAMS`      | A 3.0$M_\odot$ base case. No diffusion, no rotation, and with a gray atmosphere. Run to the TAMS. |
+| `Test_m3000_feh0_base_ZAHB`      | A 3.0$M_\odot$ base case. No diffusion, no rotation, and with a gray atmosphere. Run to the ZAHB. |
 
-- Pre-MS rotation, slow, to MSTO, with loss and transport, settling 0.3, 0.6, 1.4 -small core and envelope fitting. 
+## Test Suite Extras (`examples/`)
+ 
+ To be completed.
 
-- Pre-MS rotation, fast, to MSTO, with loss and transport, settling 0.3, 0.6, 1.4 -small core and envelope fitting. 
-
-- Pre-MS to core He ignition, no diffusion, slow rotation, 1, 3, 8 -standard core and envelope fitting. 
-
-- Pre-MS to core He ignition, no diffusion, fast rotation, 1, 3, 8 -standard core and envelope fitting. 
-
-- Toggle switch setting for Pre-MS to He core ignition (1) or H core exhaustion (0.3), to test 1) atmospheres; 2) OPAL+SCV vs OPAL EoS vs SCV; 3) various rotation settings; 4) star spots; 5) neutrino cooling DONE (1 only). 
-
-- Toggle switch settings for Pre-MS to He core ignition (3,8) to test core overshooting. 
-
-- Toggle switch settings for solar model, settling, no rotation to test nuclear reaction rates. 
-
-Once these are done, models with different metallicities, should be added. Some sample runs starting on the MS and on the core He-burning sequence, as well as sample rescaling cases, are also needed. 
+### Links to test suite models:
+```{toctree}
+:maxdepth: 1
+:glob:
+testsuite/*
+```
