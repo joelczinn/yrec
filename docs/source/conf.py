@@ -34,4 +34,9 @@ source_suffix = {
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
 html_theme = 'sphinx_book_theme'
+html_theme_options = {
+    "path_to_docs": "docs/source",
+    "collapse_navigation": True,
+    "navigation_depth": 4
+}
 html_static_path = ['_static']

@@ -36,16 +36,16 @@
  LPULSE = .FALSE.  
   
  LALEX06 = .TRUE.  
- FALEX06 = "../../input/opacity/alex06/alexmol06gs98.tab"  
+ FALEX06 = "../../input/opacity/molecular/alex06/alexmol06gs98.tab"  
    
  LOPAL95 = .TRUE.  
  ZOPAL951 = 0.017968  
- FLIV95 = "../../input/opacity/opal95/GS98.OP17"  
+ FLIV95 = "../../input/opacity/atomic/legacy/opal95/GS98.OP17"  
   
  LPUREZ = .TRUE.  
- FPUREZ = "../../input/opacity/lanl/PURECO.DBGLAOL"  
+ FPUREZ = "../../input/opacity/atomic/lanl/PURECO.DBGLAOL"  
   
- FFIRST = "output/Test_3Msolar_GS_rot_gray_OPALSCV_SF2_GS98_OP_CF10_TAMS.last"  ! Starting model path.
+ FFIRST = "../../input/models/tams/Test_3Msolar_GS_rot_gray_OPALSCV_SF2_GS98_OP_CF10_TAMS.last"  ! Starting model path.
  FLAST = "output/Test_3Msolar_GS_rot_gray_OPALSCV_SF2_GS98_OP_CF10_RGp2diffrotI1.last" ! The last converged model is stored here.
  FMODPT = "output/Test_3Msolar_GS_rot_gray_OPALSCV_SF2_GS98_OP_CF10_RGp2diffrotI1.full" ! No longer used.
  FSTOR = "output/Test_3Msolar_GS_rot_gray_OPALSCV_SF2_GS98_OP_CF10_RGp2diffrotI1.store" ! Model snapshots during the run are stored here.
@@ -58,7 +58,7 @@
  FSCOMP = "output/Test_3Msolar_GS_rot_gray_OPALSCV_SF2_GS98_OP_CF10_RGp2diffrotI1.excomp" ! No longer used (light elements vs. time, now included in track file)
   
  FOPALE06 = "../../input/eos/opal2006/EOSOPAL06Z0.016492" ! OPAL 2006 EoS table path.
- FcondOpacP = "../../input/opacity/potekhin/condall06.d" ! Conductive opacity table path.
+ FcondOpacP = "../../input/opacity/conductive/potekhin/condall06.d" ! Conductive opacity table path.
  FATM = "../../input/atmos/kurucz/atmk1990p00.tab" ! Model atmosphere look-up table for Kurucz and Kurucz/Castelli.
  FALLARD = "../../input/atmos/allard/Nextgen2.all" ! Allard model atmosphere look-up table (solar Z only).
  FSCVH = "../../input/eos/scv/h_tab_i.dat" ! SCZ EoS table for X

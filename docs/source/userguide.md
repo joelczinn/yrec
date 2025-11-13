@@ -1,7 +1,7 @@
 User Guide
 ==========
 
-Welcome to YREC! In this guide, we present some common use cases for the YREC code, as well as overall troubleshooting advice. YREC can be applied to a wide range of astrophysical problems. No single set of controls will be adequate for all physically interesting cases. The different sample cases below involve using the code to solve problems that require significant differences in the numerical controls, tied to the nature of the problems themselves.
+YREC can be applied to a wide range of astrophysical problems. No single set of controls will be adequate for all physically interesting cases. The different sample cases below involve using the code to solve problems that require significant differences in the numerical controls, tied to the nature of the problems themselves.
 
 ```{admonition} Errors
 :class: hint
@@ -108,10 +108,8 @@ A negative value means that this component is not being rescaled (except for `SE
 
 **ENDAGE**(I) - Stop runs if the model age exceeds this value (in yr).
 
+## Namelist options reference
 
+[Control namelist](namelist_control.md)
 
-Annotated code example:
-
-```{literalinclude} ../../src/alfilein.f
-:lines: 1-20
-```
+[Physics namelist](namelist_physics.md)
