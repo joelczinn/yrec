@@ -196,6 +196,9 @@ def test_yrec(tdir, nml1, nml2):
 
     # Run the executable with the inputs for a given test case.
     os.chdir(tdir)
+    for direc in ['output', 'standard']:
+        if not os.path.exists(direc):
+            os.mkdir(direc)
     proc = sp.run([yrec_exe, nml1, nml2],
             stdout=sp.PIPE,
             stderr=sp.PIPE)
