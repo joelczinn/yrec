@@ -305,10 +305,11 @@ C      *    HSTOT,HT,IKUT,ISTORE,JCORE,JENV,LARGE,LC,LNEW,M,MODEL,  ! KC 2025-05
      *    NK,OMEGA,PS,QDP,QDT,QIW,R0,RS,SJTOT,SKEROT,SMASS,TEFFL,
      *    TLUMX,TRIL,TRIT,TS,VEL,HG,V)
       IF(OMEGA(1) .EQ. 0) THEN
-          LROT = .FALSE.
-          PRINT *,""
-          PRINT *,"(2) Setting LROT to FALSE b/c OMEGA(1) = 0"
-          PRINT *,""
+1611      FORMAT('LROT set to TRUE, but OMEGA(1) = 0. Stopping.',
+     *           ' Initialize rotation rates or set LROT to',
+     *           ' FALSE.')
+          PRINT 1611
+          STOP
       ENDIF
 c     MHP 10/24 CHECK STOP CONDITIONS AND DISABLE THEM IF THE STARTING VALUES ARE BELOW THE TARGET THRESHOLD
          IF(LENDAG(NK))THEN
@@ -564,10 +565,11 @@ C      *          HSTOT,HT,IKUT,ISTORE,JCORE,JENV,LARGE,LC,LNEW,M,MODEL,  ! KC 2
      *          NK,OMEGA,PS,QDP,QDT,QIW,R0,RS,SJTOT,SKEROT,SMASS,TEFFL,
      *          TLUMX,TRIL,TRIT,TS,VEL,HG,V)
              IF(OMEGA(1) .EQ. 0) THEN
-                 LROT = .FALSE.
-                 PRINT *,""
-                 PRINT *,"(1) Setting LROT to FALSE b/c OMEGA(1) = 0"
-                 PRINT *,""
+18               FORMAT('LROT set to TRUE, but OMEGA(1) = 0. Stopping.',
+     *                  ' Initialize rotation rates or set LROT to',
+     *                  ' FALSE.')
+                 PRINT 18
+                 STOP
              ENDIF
           ENDIF
           LPUNCH = .TRUE.
