@@ -1,11 +1,11 @@
 # YREC Makefile
 #
 # Usage:
-# Several build targets are supported,
-#           : default target, standard development flags, display all warnings
-#   debug   : Default flags + debug flags
-#   release : Warning and optimization flags only
-#   prof    : Profiler build to allow use of gprof profiling tool
+# Several build targets are supported.
+#   release : The default target, maximum performance, warning and optimization flags only
+#   devel   : standard development flags, display all warnings, trap exceptions
+#   debug   : Default flags + debug flags, address sanitizer enabled
+#   prof    : Allows use of gprof profiling tool + devel flags + optimization
 #
 # Several compilers are supported.
 #   gfortran : GNU Fortran compiler, the default
@@ -16,14 +16,16 @@
 #  make [FC=<compiler>] <target>
 #
 # Examples:
-# gfortran, standard development flags:
+# gfortran, optimized release build:
 #    make
 # gfortran, debug build
 #    make debug
-# ifort, standard development build:
-#    make FC=ifort
+# gfortran, profiling build
+#    make prof
+# ifort, development build:
+#    make FC=ifort devel
 # ifx, release build:
-#    make FC=ifx release
+#    make FC=ifx
 #
 # To remove executable and all intermediate object files:
 #    make clean
@@ -82,8 +84,11 @@ else
 endif
 
 # Targets
-all: FFLAGS += $(DEV_FFLAGS)
+all: FFLAGS += $(REL_FFLAGS)
 all: $(NAME)
+
+devel: FFLAGS += $(DEV_FFLAGS)
+devel: $(NAME)
 
 debug: FFLAGS += $(DEV_FFLAGS) $(DBG_FFLAGS)
 debug: LDFLAGS += $(DBG_LDFLAGS)
