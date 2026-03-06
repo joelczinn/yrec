@@ -34,7 +34,7 @@ solid_output_dir = "/tracks/comparisons/solidbody" #directory for solid body rot
 nonsolid_output_dir = "/tracks/comparisons/nonsolidbody" #directory for non-solid body rotevol outputs 
 
 fname_template = "{0}" #naming convention for rotevol outputs
-track_dir = "../../Release Paper Sample Case Output/Gyrochrones"
+track_dir = "../../Output/sample_cases/Gyrochrones" #where to find input evolutionary tracks
 local_rotevol = os.getcwd() 
 
 os.system("mkdir {0}".format(solid_output_dir))

@@ -108,6 +108,12 @@ A negative value means that this component is not being rescaled (except for `SE
 
 **ENDAGE**(I) - Stop runs if the model age exceeds this value (in yr).
 
+**END_XCEN**(I) - Stop runs if the model central hydrogen drops below this value.
+
+**END_YCEN**(I) - Stop runs if the model central helium drops below this value.
+
+**NMODLS**(I) - Stop after this number of models.
+
 ## Namelist options reference
 
 [Control namelist](namelist_control.md)

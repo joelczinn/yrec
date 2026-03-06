@@ -24,7 +24,7 @@ master_output_dir = "/tracks/2.0000D0PMMA_1.0000D0PMMB_2.2000D-1PMMM/" #director
 
 fname_template = "{0}" #naming convention for rotevol outputs
 
-track_dir = "../../Release Paper Sample Case Output/Gyrochrones"
+track_dir = "../../Output/sample_cases/Gyrochrones"
 local_rotevol = os.getcwd()
 
 os.system("mkdir {0}".format(master_output_dir))

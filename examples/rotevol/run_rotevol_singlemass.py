@@ -25,7 +25,7 @@ rotevol_executable = "run_experiment" #must match executable name in Makerotwind
 master_output_dir = "/tracks/solar_model/" #directory for rotevol outputs 
 
 fname_template = "solar_rot_{0}PMMA" #naming convention for rotevol outputs
-track_dir = "../../Release Paper Sample Case Output/Gyrochrones"
+track_dir = "../../Output/sample_cases/Gyrochrones"
 local_rotevol = os.getcwd()
 
 os.system("mkdir {0}".format(master_output_dir))

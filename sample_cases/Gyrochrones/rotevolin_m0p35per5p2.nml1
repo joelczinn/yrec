@@ -99,43 +99,41 @@
 ! Input files
 ! Opacity tables and options
  LALEX06 = .TRUE. ! If T, use Ferguson+2005 molecular opacities (recommended)
- FALEX06 = "../../input/opacity/molecular/alex06/alexmol06gs98.tab" ! Molecular opacity table path  
+ FALEX06 = "{YREC_INPUT}/opacity/molecular/alex06/alexmol06gs98.tab" ! Molecular opacity table path  
  LOPAL95 = .TRUE. ! If T, use atomic opacities in the OP/OPAL format (recommended).
  ZOPAL951 = 0.018126 ! Generate a surface mixture table with this Z. Speeds up models without diffusion.
- FLIV95 = "../../input/opacity/atomic/op05/GS98.OP17" ! Atomic opacity table path
+ FLIV95 = "{YREC_INPUT}/opacity/atomic/op05/GS98.OP17" ! Atomic opacity table path
  LPUREZ = .TRUE. 
- FPUREZ = "../../input/opacity/atomic/lanl/PURECO.DBGLAOL" ! Pure Y/Z  opacity table path
- FcondOpacP = "../../input/opacity/conductive/potekhin/condall06.d" ! Conductive opacity table path.
+ FPUREZ = "{YREC_INPUT}/opacity/atomic/lanl/PURECO.DBGLAOL" ! Pure Y/Z  opacity table path
+ FcondOpacP = "{YREC_INPUT}/opacity/conductive/potekhin/condall06.d" ! Conductive opacity table path.
 
 ! Equation of state tables
- FOPALE06 = "../../input/eos/opal2006/new/EOSOPAL06Z0.01822325463082438" ! OPAL 2006 EoS table path.
- FATM = "../../input/atmos/kurucz/atmk1990p00.tab" ! Model atmosphere look-up table for Kurucz and Kurucz/Castelli.
- FALLARD = "../../input/atmos/allard/Nextgen2.all" ! Allard model atmosphere look-up table (solar Z only).
- FSCVH = "../../input/eos/scv/h_tab_i.dat" ! SCZ EoS table for X
- FSCVHE = "../../input/eos/scv/he_tab_i.dat" ! SCZ EoS table for Y
- FSCVZ = "../../input/eos/scv/z_tab_i.dat" ! SCZ EoS table for Z (generated from YREC EoS, needed for consistency)
- FFERMI = "../../input/eos/yale/FERMI.TAB" ! Fermi integral tables for partial degeracy
+ FOPALE06 = "{YREC_INPUT}/eos/opal2006/EOSOPAL06Z0.018223255" ! OPAL 2006 EoS table path.
+ FATM = "{YREC_INPUT}/atmos/kurucz/atmk1990p00.tab" ! Model atmosphere look-up table for Kurucz and Kurucz/Castelli.
+ FALLARD = "{YREC_INPUT}/atmos/allard/Nextgen2.all" ! Allard model atmosphere look-up table (solar Z only).
+ FSCVH = "{YREC_INPUT}/eos/scv/h_tab_i.dat" ! SCZ EoS table for X
+ FSCVHE = "{YREC_INPUT}/eos/scv/he_tab_i.dat" ! SCZ EoS table for Y
+ FSCVZ = "{YREC_INPUT}/eos/scv/z_tab_i.dat" ! SCZ EoS table for Z (generated from YREC EoS, needed for consistency)
+ FFERMI = "{YREC_INPUT}/eos/yale/FERMI.TAB" ! Fermi integral tables for partial degeracy
 
 ! Starting models
- ! FFIRST = "/Users/jvansaders/Documents/yrec-github/yrec/input/models/pms/gs98/p100gs98z01757.ahbl" ! Sample starting model - pre-MS seed
- FFIRST = "../../input/models/dbl/m0300gs98z018804_Dbl.first" ! Sample starting model - Deuterium birthline
- ! FFIRST = "/Users/jvansaders/Documents/yrec-github/yrec/input/models/ZAMS/m1000gs98z018804_ZAMS.first" ! Sample starting model - ZAMS
- ! FFIRST = "output/testsuite/Test_m1000_feh0_noGS_TAMS.last" ! Sample starting model - TAMS
+ FFIRST = "{YREC_START}/m0400gs98z018804_Dbl.first" ! Sample starting model - Deuterium birthline
 
 ! Output files 
- FLAST = "rotevolin_m0p35per5p2.last" ! The last converged model is stored here.
- FSTOR = "rotevolin_m0p35per5p2.store" ! Model snapshots during the run are stored here.
- FTRACK = "rotevolin_m0p35per5p2.track" ! Global variables as a function of time are stored here.
- FSHORT = "rotevolin_m0p35per5p2.short" ! Details about the numerics of the model run are stored here.
- FPMOD = "rotevolin_m0p35per5p2.pmod" ! Pulsation output for the interior model.
- FPENV = "rotevolin_m0p35per5p2.penv"! Pulsation output for the envelope model.
- FPATM = "rotevolin_m0p35per5p2.patm" ! Pulsation output for the atmosphere model.
+ FLAST = "{YREC_OUTPUT}/sample_cases/Gyrochrones/rotevolin_m0p350per5p2.last" ! The last converged model is stored here.
+ FSTOR = "{YREC_OUTPUT}/sample_cases/Gyrochrones/rotevolin_m0p350per5p2.store" ! Model snapshots during the run are stored here.
+ FTRACK = "{YREC_OUTPUT}/sample_cases/Gyrochrones/rotevolin_m0p350per5p2.track" ! Global variables as a function of time are stored here.
+ FSHORT = "{YREC_OUTPUT}/sample_cases/Gyrochrones/rotevolin_m0p350per5p2.short" ! Details about the numerics of the model run are stored here.
+ FPMOD = "{YREC_OUTPUT}/sample_cases/Gyrochrones/rotevolin_m0p350per5p2.pmod" ! Pulsation output for the interior model.
+ FPENV = "{YREC_OUTPUT}/sample_cases/Gyrochrones/rotevolin_m0p350per5p2.penv"! Pulsation output for the envelope model.
+ FPATM = "{YREC_OUTPUT}/sample_cases/Gyrochrones/rotevolin_m0p350per5p2.patm" ! Pulsation output for the atmosphere model.
   
 ! Legacy output files
- FMODPT = "rotevolin_m0p35per5p2.full" ! No longer used.
- FSNU = "rotevolin_m0p35per5p2.snu" ! No longer used (formally, output if LSNU = T).
- FSCOMP = "rotevolin_m0p35per5p2.excomp" ! No longer used (light elements vs. time, now included in track file)
+ FMODPT = "{YREC_OUTPUT}/sample_cases/Gyrochrones/rotevolin_m0p350per5p2.full" ! No longer used.
+ FSNU = "{YREC_OUTPUT}/sample_cases/Gyrochrones/rotevolin_m0p350per5p2.snu" ! No longer used (formally, output if LSNU = T).
+ FSCOMP = "{YREC_OUTPUT}/sample_cases/Gyrochrones/rotevolin_m0p350per5p2.excomp" ! No longer used (light elements vs. time, now included in track file)
 
+! Custom mixture controls - CNO ena
 ! Custom mixture controls - CNO enabled if ISETMIX = 2, Light elements if ISETISO=2
 
 ! Total CNO (isotope ratios controlled with ISETISO)

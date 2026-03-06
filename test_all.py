@@ -9,6 +9,7 @@
 import os, sys
 import shutil
 from glob import glob
+import pathlib
 import re
 import numbers
 import pytest
@@ -19,9 +20,10 @@ config = cfp.ConfigParser()
 config.read("pytest.ini")
 yrec_exe = os.path.abspath( config['paths']['yrec'] )
 tests = [x for x in config['paths']['tests'].split('\n') if len(x) > 0 ]
-float_abs_tol = float(config['tolerances']['float_abs_tol'])
+float_frac_tol = float(config['tolerances']['float_frac_tol'])
 int_abs_tol = int(config['tolerances']['int_abs_tol'])
 ref_dir = config['paths']['reference_dir']
+show_output = config.getboolean('options','show_output_upon_failure')
 
 if not os.path.exists(yrec_exe):
     raise FileNotFoundError(f"YREC executable {yrec_exe} not found!")
@@ -50,13 +52,14 @@ def collect_tests(testreqs):
         else:
             curdir = os.getcwd()
             os.chdir(testreq)
+            shortdir = os.path.basename(testreq)
             for nml1 in sorted(glob(f'*.nml1')):
                 tbase = nml1.replace(".nml1", "")
                 test_nml2 = f"{tbase}.nml2"
                 if os.path.exists(test_nml2):
                     tcases.append([testreq, nml1, test_nml2])
                 else:
-                    dir_nml2 = f"{testreq}.nml2"
+                    dir_nml2 = f"{shortdir}.nml2"
                     tcases.append([testreq, nml1, dir_nml2])
             os.chdir(curdir)
     return tcases
@@ -112,9 +115,18 @@ def filevals_differ(ref_file, out_file, float_tol, int_tol):
                 except IndexError as ex:
                     difference = True
                     break
-                if type(val) == float and diff > float_tol:
-                    locs.append(i)
-                    difference = True
+
+                # Check against fractional floating point tolerance
+                if type(val) == float:
+                    if val != 0:
+                        if abs(diff/val) > float_tol:
+                            locs.append(i)
+                            difference = True
+                    else:
+                        if diff != 0:
+                            locs.append(i)
+                            difference = True
+
                 if type(val) == int and diff > int_tol:
                     locs.append(i)
                     difference = True
@@ -197,14 +209,23 @@ def test_yrec(tdir, nml1, nml2):
     # Run the executable with the inputs for a given test case.
     os.chdir(tdir)
     for direc in ['output', 'standard']:
-        if not os.path.exists(direc):
-            os.mkdir(direc)
+        os.makedirs(direc, exist_ok=True)
     proc = sp.run([yrec_exe, nml1, nml2],
             stdout=sp.PIPE,
             stderr=sp.PIPE)
     os.chdir(startdir)
-    print(proc.stdout.decode())
-    print(proc.stderr.decode())
+    out = proc.stdout.decode()
+    err = proc.stderr.decode()
+    if show_output:
+        print(out)
+        print(err)
+
+    # Extract output directory from terminal output
+    outdir = None
+    for line in out.split('\n'):
+        if "OUTPUT placed in" in line:
+            outdir = str(pathlib.Path(line.split(':')[1].strip()))
+    print(f'{outdir=}')
 
     # Fail on abnormal termination
     assert proc.returncode == 0, "Program terminated abnormally"
@@ -214,7 +235,11 @@ def test_yrec(tdir, nml1, nml2):
     # If no reference standard, copy outputs to
     # reference standard location and return.
     tbase = nml1.replace(".nml1", "")
-    outputs = glob(f"{tdir}/output/{tbase}.*")
+    all_outputs = glob(f"{tdir}/{outdir}/{tbase}.*")
+    print(f"{tdir}/{outdir}/{tbase}")
+    print(f"{all_outputs=}")
+    outputs = [f for f in all_outputs if re.search(r'(\.short|\.store|\.track)', f)]
+    print(f"{outputs=}")
 
     # Fail on missing outputs
     assert len(outputs) > 0, "Missing output(s)"
@@ -231,7 +256,7 @@ def test_yrec(tdir, nml1, nml2):
             shutil.copyfile(out, ref)
             print(f"{out} copied to reference")
         print(f"--- Comparing standard to {out}\n")
-        if filevals_differ(ref, out, float_abs_tol, int_abs_tol):
+        if filevals_differ(ref, out, float_frac_tol, int_abs_tol):
             outputs_identical = False
     assert outputs_identical, "Output differs from reference standard"
 
